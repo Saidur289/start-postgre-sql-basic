@@ -13,7 +13,8 @@ app.listen(PORT, () => {
 //Get /books => return all the books 
 app.get('/books', async(req, res) => {
     try {
-        res.status(200).json({message: 'Books are returned'})
+        const books = await pool.query('SELECT * FROM book')
+        res.status(200).json({message: 'Books are returned', data: books.rows})
         
     } catch (error) {
         res.json({error: error.message})
