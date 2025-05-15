@@ -52,7 +52,7 @@ app.delete('/books/:id', async(req, res) => {
     try {
         const {id} = req.params;
         const books = await pool.query('DELETE FROM book WHERE id=$1', [id])
-        res.status(200).json({message: 'Books  is delete', data: books})
+        res.status(200).json({message: 'Books  is delete', data: books.rows})
         
     } catch (error) {
         res.json({error: error.message})
@@ -63,7 +63,8 @@ app.put('/books/:id', async(req, res) => {
     try {
         const {id} = req.params;
         const {name, description} = req.body;
-        res.status(200).json({message: `books was updated ${name}, ${description}`})
+        const updateBooks = await pool.query("UPDATE book SET name = $1, description = $2", [name, description])
+        res.status(200).json({message: `books was updated `, data: updateBooks.rows})
         
     } catch (error) {
         res.json({error: error.message})
