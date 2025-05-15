@@ -50,8 +50,9 @@ app.post('/books', async(req, res) => {
 // delete /books/:id => delete a books 
 app.delete('/books/:id', async(req, res) => {
     try {
-        const {id} = req.params
-        res.status(200).json({message: 'Books  is delete', id})
+        const {id} = req.params;
+        const books = await pool.query('DELETE FROM book WHERE id=$1', [id])
+        res.status(200).json({message: 'Books  is delete', data: books})
         
     } catch (error) {
         res.json({error: error.message})
